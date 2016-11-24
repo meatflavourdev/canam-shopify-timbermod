@@ -151,11 +151,31 @@
   {% endif %}
   <div id="PageContainer" class="is-moved-by-drawer">
     <header class="site-header" role="banner" style="background-color: #303631">
-      <div class="site-header__menu-button">
-        <i class="big fa-bars icon"></i>
-      </div>
-      <div class="site-header__wrapper wrapper">
 
+      <div class="site-header__menu-button left floated">
+        <button class="big ui icon button green js-drawer-open-left" aria-controls="NavDrawer" aria-expanded="false">
+          <i class="big bars icon"></i>
+        </button>
+      </div>
+
+      {% comment %}
+        Show number of items in the cart and total cost in the /cart link
+
+        Ajax Cart Notes:
+          - #cartCount updates the total number of items in the cart
+          - #cartCost updates the total cost of the cart
+          - Documentation:  http://shopify.com/timber#ajax-cart
+      {% endcomment %}
+      <div class="site-header__cart-button right floated" style="position: relative; top: 25px; right: 25px;">
+        <a href="/cart" class="js-drawer-open-right" aria-controls="CartDrawer" aria-expanded="false">
+          <i class="big cart link icon inverted"></i>
+          <div class="mini floating ui blue label circular">
+            <span class="site-header__cart-count" id="CartCount" style="font-size: 1.5em">{{ cart.item_count }}</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="site-header__wrapper wrapper">
         <div class="grid--full grid--table">
           <div class="grid__item large--one-half">
             {% comment %}
@@ -185,21 +205,6 @@
             <div style="display:flex; justify-content: flex-end;">
               <div class="site-header__search">
                 {% include 'search-bar' %}
-              </div>
-
-              {% comment %}
-                Show number of items in the cart and total cost in the /cart link
-
-                Ajax Cart Notes:
-                  - #cartCount updates the total number of items in the cart
-                  - #cartCost updates the total cost of the cart
-                  - Documentation:  http://shopify.com/timber#ajax-cart
-              {% endcomment %}
-              <div class="site-header__cart-container">
-                <a href="/cart" class="site-header__cart-toggle js-drawer-open-right" aria-controls="CartDrawer" aria-expanded="false">
-                  <span class="site-header__cart-icon icon icon-cart" aria-hidden="true"></span>
-                  <span class="site-header__cart-count" id="CartCount">{{ 'layout.cart.title' | t }} ({{ cart.item_count }})</span>
-                </a>
               </div>
 
               {% comment %}
