@@ -41,10 +41,6 @@ Thumbs.db
 ######################
 *.sass-cache*
 /node_modules
-grunt-config.json
-config.yml
-/_site
-assets/logo.png
 /.cache
 /deploy
 yarn.lock

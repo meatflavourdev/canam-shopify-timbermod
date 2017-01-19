@@ -25,12 +25,12 @@
   {% include 'social-meta-tags' %}
   <link rel="canonical" href="{{ canonical_url }}">
   <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
-  <meta name="theme-color" content="{{ settings.color_primary }}">
+  <meta name="theme-color" content="#303631">
 
   <!-- CSS ================================================== -->
   {{ 'timber.scss.css' | asset_url | stylesheet_tag }}
   {{ 'semantic.css' | asset_url | stylesheet_tag }}
-  {{ 'canam.css' | asset_url | stylesheet_tag }}
+  {{ 'canam.scss.css' | asset_url | stylesheet_tag }}
 
   <!-- Header hook for plugins ================================================== -->
   {{ content_for_header }}
@@ -59,8 +59,8 @@
       <div class="drawer__title h3">{{ 'layout.drawers.browse' | t }}</div>
       <div class="drawer__close js-drawer-close">
         <button type="button" class="icon-fallback-text">
-          <span class="icon icon-x" aria-hidden="true"></span>
-          <span class="fallback-text">{{ 'layout.drawers.close_menu' | t }}</span>
+          <i class="icon remove circle"></i>
+          <!--<span class="fallback-text">{{ 'layout.drawers.close_menu' | t }}</span>-->
         </button>
       </div>
     </div>
@@ -83,12 +83,12 @@
               <a href="{{ link.url }}" class="mobile-nav__link">{{ link.title }}</a>
               <div class="mobile-nav__toggle">
                 <button type="button" class="icon-fallback-text mobile-nav__toggle-open">
-                  <span class="icon icon-plus" aria-hidden="true"></span>
-                  <span class="fallback-text">See More</span>
+                  <i class="icon plus"></i>
+                  <!--<span class="fallback-text">See More</span>-->
                 </button>
                 <button type="button" class="icon-fallback-text mobile-nav__toggle-close">
-                  <span class="icon icon-minus" aria-hidden="true"></span>
-                  <span class="fallback-text">{{ 'cart.general.close_cart' | t | json }}</span>
+                  <i class="icon minus"></i>
+                    <!--<span class="fallback-text">{{ 'cart.general.close_cart' | t | json }}</span>-->
                 </button>
               </div>
             </div>
@@ -96,6 +96,7 @@
               {% for childlink in linklists[child_list_handle].links %}
                 <li class="mobile-nav__item {% if childlink.active %} mobile-nav__item--active{% endif %}">
                   <a href="{{ childlink.url }}" class="mobile-nav__link">{{ childlink.title | escape }}</a>
+                  <hr>
                 </li>
               {% endfor %}
             </ul>
@@ -103,6 +104,7 @@
         {% else %}
           <li class="mobile-nav__item{% if link.active %} mobile-nav__item--active{% endif %}">
             <a href="{{ link.url }}" class="mobile-nav__link">{{ link.title }}</a>
+            <hr>
           </li>
         {% endif %}
       {% endfor %}
@@ -141,8 +143,8 @@
         <div class="drawer__title h3">{{ 'cart.general.title' | t }}</div>
         <div class="drawer__close js-drawer-close">
           <button type="button" class="icon-fallback-text">
-            <span class="icon icon-x" aria-hidden="true"></span>
-            <span class="fallback-text">{{ 'cart.general.close_cart' | t | json }}</span>
+            <i class="icon remove circle"></i>
+            <!--<span class="fallback-text">{{ 'cart.general.close_cart' | t | json }}</span>-->
           </button>
         </div>
       </div>
@@ -150,7 +152,7 @@
     </div>
   {% endif %}
   <div id="PageContainer" class="is-moved-by-drawer">
-    <header class="site-header" role="banner" style="background-color: #303631">
+    <header class="site-header" role="banner">
 
       <div class="site-header__menu-button left floated">
         <button class="big ui icon button green js-drawer-open-left" aria-controls="NavDrawer" aria-expanded="false">
@@ -158,32 +160,15 @@
         </button>
       </div>
 
-      {% comment %}
-        Show number of items in the cart and total cost in the /cart link
-
-        Ajax Cart Notes:
-          - #cartCount updates the total number of items in the cart
-          - #cartCost updates the total cost of the cart
-          - Documentation:  http://shopify.com/timber#ajax-cart
-      {% endcomment %}
-      <div class="site-header__cart-button right floated" style="position: relative; top: 25px; right: 25px;">
-        <a href="/cart" class="js-drawer-open-right" aria-controls="CartDrawer" aria-expanded="false">
-          <i class="big cart link icon inverted"></i>
-          <div class="mini floating ui blue label circular">
-            <span class="site-header__cart-count" id="CartCount" style="font-size: 1.5em">{{ cart.item_count }}</span>
-          </div>
-        </a>
-      </div>
-
-      <div class="site-header__wrapper wrapper">
+      <div class="wrapper">
         <div class="grid--full grid--table">
-          <div class="grid__item large--one-half">
+          <div class="site-header__logo">
             {% comment %}
               Use the uploaded logo from theme settings if enabled.
               Site name gets precedence with H1 tag on homepage, div on other pages.
             {% endcomment %}
             {% if template == 'index' %}
-              <h1 class="site-header__logo large--left" itemscope itemtype="http://schema.org/Organization">
+              <h1 class="h1 site-header__logo large--left" itemscope itemtype="http://schema.org/Organization">
             {% else %}
               <div class="h1 site-header__logo large--left" itemscope itemtype="http://schema.org/Organization">
             {% endif %}
@@ -200,43 +185,55 @@
               </div>
             {% endif %}
           </div>
-          <div class="grid__item large--one-half large--text-right medium-down--hide">
 
-            <div style="display:flex; justify-content: flex-end;">
-              <div class="site-header__search">
-                {% include 'search-bar' %}
-              </div>
-
-              {% comment %}
-                If customer accounts are enabled, provide login and create account links
-              {% endcomment %}
-              {% if shop.customer_accounts_enabled %}
-                <div>
-                  {% if customer %}
-                    {% if customer.first_name != blank %}
-                      {% capture first_name %}<a href="/account">{{ customer.first_name }}</a>{% endcapture %}
-                      {{ 'layout.customer.logged_in_as_html' | t: first_name: first_name }}
-                    {% else %}
-                      <a href="/account">{{ 'layout.customer.account' | t }}</a>
-                    {% endif %}
-                    | {{ 'layout.customer.log_out' | t | customer_logout_link }}
-                  {% else %}
-                    {{ 'layout.customer.log_in' | t | customer_login_link }}
-                    | {{ 'layout.customer.create_account' | t | customer_register_link }}
-                  {% endif %}
-                </div>
-              {% endif %}
+          <div class="site-header__search medium-down--hide">
+              {% include 'search-bar' %}
             </div>
-
-          </div>
         </div>
-
       </div>
+
+      {% comment %}
+        If customer accounts are enabled, provide login and create account links
+      {% endcomment %}
+      {% if shop.customer_accounts_enabled %}
+        <div class="site-header__customer">
+          {% if customer %}
+            {% if customer.first_name != blank %}
+              {% capture first_name %}<a href="/account">{{ customer.first_name }}</a>{% endcapture %}
+              {{ 'layout.customer.logged_in_as_html' | t: first_name: first_name }}
+            {% else %}
+              <a href="/account">{{ 'layout.customer.account' | t }}</a>
+            {% endif %}
+            | {{ 'layout.customer.log_out' | t | customer_logout_link }}
+          {% else %}
+            {{ 'layout.customer.log_in' | t | customer_login_link }}
+            | {{ 'layout.customer.create_account' | t | customer_register_link }}
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% comment %}
+        Show number of items in the cart and total cost in the /cart link
+
+        Ajax Cart Notes:
+          - #cartCount updates the total number of items in the cart
+          - #cartCost updates the total cost of the cart
+          - Documentation:  http://shopify.com/timber#ajax-cart
+      {% endcomment %}
+      <div class="site-header__cart-button right floated">
+        <a href="/cart" class="js-drawer-open-right" aria-controls="CartDrawer" aria-expanded="false">
+          <i class="big cart link icon inverted"></i>
+          <div class="mini floating ui blue label circular">
+            <span class="site-header__cart-count" id="CartCount">{{ cart.item_count }}</span>
+          </div>
+        </a>
+      </div>
+
     </header>
 
-    <nav class="nav-bar" role="navigation">
+    <nav class="nav-bar medium-down--hide" role="navigation">
       <div class="wrapper">
-        <div class="medium-down--hide">
+        <div>
           {% comment %}
             List out your main-menu linklist (default)
 
@@ -257,7 +254,7 @@
                 <li class="site-nav--has-dropdown{% if link.active %} site-nav--active{% endif %}" aria-haspopup="true">
                   <a href="{{ link.url }}" class="site-nav__link">
                     {{ link.title }}
-                    <span class="icon icon-arrow-down" aria-hidden="true"></span>
+                    <i class="icon arrow down"></i>
                   </a>
                   <ul class="site-nav__dropdown">
                     {% for childlink in linklists[child_list_handle].links %}
@@ -275,28 +272,6 @@
             {% endfor %}
           </ul>
           <!-- //site-nav -->
-        </div>
-        <div class="large--hide medium-down--show">
-          <div class="grid">
-            <div class="grid__item one-half">
-              <div class="site-nav--mobile">
-                <button type="button" class="icon-fallback-text site-nav__link js-drawer-open-left" aria-controls="NavDrawer" aria-expanded="false">
-                  <span class="icon icon-hamburger" aria-hidden="true"></span>
-                  <span class="fallback-text">{{ 'layout.navigation.menu' | t }}</span>
-                </button>
-              </div>
-            </div>
-            <div class="grid__item one-half text-right">
-              <div class="site-nav--mobile">
-                <a href="/cart" class="js-drawer-open-right site-nav__link" aria-controls="CartDrawer" aria-expanded="false">
-                  <span class="icon-fallback-text">
-                    <span class="icon icon-cart" aria-hidden="true"></span>
-                    <span class="fallback-text">{{ 'layout.cart.title' | t }}</span>
-                  </span>
-                </a>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </nav>
@@ -318,16 +293,16 @@
                   {% if settings.social_twitter_link != blank %}
                     <li>
                       <a class="icon-fallback-text" href="{{ settings.social_twitter_link }}" title="{{ shop.name }} on Twitter">
-                        <span class="icon icon-twitter" aria-hidden="true"></span>
-                        <span class="fallback-text">Twitter</span>
+                        <i class="large icon twitter"></i>
+                        <!--<span class="fallback-text">Twitter</span>-->
                       </a>
                     </li>
                   {% endif %}
                   {% if settings.social_facebook_link != blank %}
                     <li>
                       <a class="icon-fallback-text" href="{{ settings.social_facebook_link }}" title="{{ shop.name }} on Facebook">
-                        <span class="icon icon-facebook" aria-hidden="true"></span>
-                        <span class="fallback-text">Facebook</span>
+                        <i class="large icon facebook"></i>
+                        <!--<span class="fallback-text">Facebook</span>-->
                       </a>
                     </li>
                   {% endif %}
@@ -387,21 +362,63 @@
                   {% if payment_icons_available contains type %}
                     <li>
                       <span class="icon-fallback-text">
-                        <span class="icon icon-{{type}}" aria-hidden="true"></span>
-                        <span class="fallback-text">{{ type | replace: '_',' '}}</span>
+                        <i class="large icon payment-{{type}}"></i>
+                        <!--<span class="fallback-text">{{ type | replace: '_',' '}}</span>-->
                       </span>
                     </li>
                   {% endif %}
                 {% endfor %}
               </ul>
             {% endunless %}
-            <a href="http://shopify.com/timber">Timber Theme Framework</a> by <a href="http://www.shopify.com?ref=Timber" title="Shopify.com">Shopify</a><br>
-            <small>{{ powered_by_link }}</small>
+            <!--<small>{{ powered_by_link }}</small>-->
           </div>
         </div>
       </div>
     </footer>
     <!-- //site-footer -->
+
+    <footer id="footer" class="clearfix dark">
+
+      <!-- .footer start -->
+      <!-- ================ -->
+      <div class="footer">
+        <div class="container">
+          <div class="footer-inner">
+            <div class="row">
+              <div class="col-md-4">
+                <div class="footer-content">
+                  {% comment %}<h4 class="title text-default"><i class="fa fa-info-circle pr-10"></i> Information</h4>{% endcomment %}
+                  <nav>
+                    <ul class="nav nav-pills nav-stacked list-style-icons">
+                    {% for link in linklists.footer.links %}
+                      <li><a href="{{ link.url }}"><i class="fa fa-chevron-circle-right"></i>{{ link.title }}</a></li>
+                    {% endfor %}
+                    </ul>
+                  </nav>
+                </div>
+              </div>
+              <div class="col-md-4"><!-- Empty --></div>
+              <div class="col-md-4">
+                <div class="footer-content">
+                  <div class="logo-footer mb-20">
+                    <img id="logo_img" src="{{ 'canamstore_header_logo_01.png' | asset_url }}" alt="Canam Store">
+                  </div>
+                  <div class="separator-2"></div>
+                  <ul class="list-icons">
+                    <li><i class="fa fa-map-marker pr-10 text-default"></i> 25 Crestview Drive, AB, T8T 0C3</li>
+                    <li><a href="tel:+17804582116"><i class="fa fa-phone pr-10 text-default"></i> +17804582116</a></li>
+                    <li><a href="mailto:info@canamtool.com"><i class="fa fa-envelope-o pr-10"></i>info@canamtool.com</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- .footer end -->
+
+    </footer>
+    <!-- footer end -->
   </div>
 
   {{ 'fastclick.min.js' | asset_url | script_tag }}

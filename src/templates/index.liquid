@@ -7,7 +7,11 @@
     - http://docs.shopify.com/themes/liquid-variables/global
 {% endcomment %}
 
-<h2>{{ 'homepage.sections.frontpage_title' | t }}</h2>
+<div class="ui hidden divider"></div>
+
+<h3 class="ui horizontal divider header">
+  {{ 'homepage.sections.frontpage_title' | t }}
+</h3>
 
 {% comment %}
   Use class grid-uniform to have evenly sized columns clear
@@ -46,9 +50,9 @@
 
 </div>
 
-<hr>
-
-<h2>{{ 'homepage.sections.featured_title' | t }}</h2>
+<h3 class="ui horizontal divider header">
+  {{ 'homepage.sections.featured_title' | t }}
+</h3>
 
 <div class="grid-uniform">
 
@@ -110,15 +114,16 @@
 
 </div>
 
+{% comment %}
 <hr>
 
-{% comment %}
+
   Loop through three recent blog articles with the following code.
 
   Since we're not on the blog template, we need to define the blog
   handle we want to focus on. For this example we'll use the default 'news',
   but you can create a blog page-specific content if you want.
-{% endcomment %}
+
 <h2>{{ 'homepage.sections.news_title' | t }}</h2>
 
 <div class="grid">
@@ -129,10 +134,10 @@
       <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: format: 'month_day_year' }}</time>
       <h3><a href="{{ article.url }}">{{ article.title }}</a></h3>
 
-      {% comment %}
+      
         Add a surrounding div with class 'rte' to anything that will come from the rich text editor.
         Since this is just a listing page, you can either use the excerpt or truncate the full article.
-      {% endcomment %}
+
       <div class="rte">
         {% if article.excerpt.size > 0 %}
           {{ article.excerpt }}
@@ -141,9 +146,7 @@
         {% endif %}
       </div>
 
-      {% comment %}
-        Show off meta information like number of comments and tags.
-      {% endcomment %}
+        <!--Show off meta information like number of comments and tags.-->
       <ul>
         {% if blog.comments_enabled? %}
         <li>
@@ -161,3 +164,4 @@
 
   {% endfor %}
 </div>
+{% endcomment %}

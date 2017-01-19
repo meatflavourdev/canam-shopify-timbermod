@@ -1,0 +1,95 @@
+hr {
+    border-top: solid #e9e9e9;
+    border-width: 1px 0 0;
+}
+
+header.site-header {
+    background-color: #303631;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .site-header__menu-button > button.big.ui.icon.button.green {
+        border-radius:0px;
+        height:78px;
+        width:78px;
+        background-color:#1ac36f;
+
+        &:hover {
+            background-color:#1ac36f;
+        }
+
+        i.big.bars.icon {
+            position: relative;
+            top: -2px;
+        }
+    }
+
+    .wrapper .grid--full .site-header__logo {
+        float:left;
+
+        &.h1 {
+            margin: 10px 0;
+        }
+    }
+
+    .site-header__search{
+        float:right;
+        width:50%;
+        padding:0px
+    }
+
+    .site-header__cart-button{
+        position: relative;
+        padding: 0 20px;
+
+        a .ui.label.circular{
+            left: 57px;
+        }
+
+        .site-header__cart-count{
+            font-size: 1.5em;
+        }
+    }
+
+}
+
+#NavDrawer {
+    ul.mobile-nav {
+        li.mobile-nav__item {
+            a.mobile-nav__link:hover {
+                background-color:#1ac36f;
+                color:#ffffff;
+                opacity:1;
+            }
+
+            hr {
+                margin: 0 auto;
+                width: 90%;
+            }
+        }
+    }
+}
+
+#PageContainer {
+    background-color:#ffffff;
+}
+
+nav.ui.breadcrumb {
+    padding: 32px 0;
+}
+
+
+
+
+i.icon{
+    &.payment-visa:before {
+        content: "\f1f0";
+    }
+    &.payment-master:before {
+        content: "\f1f1";
+    }
+    &.payment-american_express:before {
+        content: "\f1f3";
+    }
+}
