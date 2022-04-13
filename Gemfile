@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'nokogiri'
+gem 'nokogiri', '>= 1.13.4'
 gem 'htmlentities'
 
 group :development do
